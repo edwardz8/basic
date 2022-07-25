@@ -1,6 +1,7 @@
 <template>
   <h1>{{ title }}</h1>
   <div v-html="contents"></div>
+  <span v-if="phoneNumber">{{ phoneNumber }}</span>
 </template>
 
 <script setup>
@@ -10,6 +11,8 @@ import { throwError } from '@/modules/utils'
 const title = ref(null)
 const contents = ref(null)
 
+const phoneNumber = ref(null)
+
 const { data } = await useFetch(`/wp-json/api/v1/page/contact`)
 if (data === null) {
   throwError('Sorry, we cannot find the requested page.', 404)
@@ -17,6 +20,7 @@ if (data === null) {
 
 title.value = data.title
 contents.value = data.contents
+phoneNumber.value = data.number
 
 useHead({
   title: data.meta.primary.title,
